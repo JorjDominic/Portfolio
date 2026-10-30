@@ -63,8 +63,7 @@ export default function App() {
       document.documentElement.style.removeProperty("--header-height");
     };
   }, []);
-  const [photo, setPhoto] = useState(""),
-    [project, setProject] = useState(null);
+  const [project, setProject] = useState(null);
   const [motionPaused, setMotionPaused] = useState(false);
   const [dark, setDark] = useState(() => {
     const saved = localStorage.getItem("portfolio-theme");
@@ -93,35 +92,18 @@ export default function App() {
         <nav>
           <a href="#about">About</a>
           <a href="#projects">Projects &amp; Technologies</a>
-          <a
-            href="https://github.com/JorjDominic"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub &#8599;
-          </a>
           <a href="#socials">Contact me</a>
         </nav>
       </header>
       <main id="home">
         <section className="hero">
           <div className="intro">
-            <label className="avatar" title="Add your photo">
-              <input
-                type="file"
-                accept="image/*"
-                aria-label="Upload your profile photo"
-                onChange={(e) => {
-                  if (e.target.files[0]) {
-                    const r = new FileReader();
-                    r.onload = () => setPhoto(r.result);
-                    r.readAsDataURL(e.target.files[0]);
-                  }
-                }}
+            <div className="avatar profile-photo">
+              <img
+                alt="Jorge Dominic M. Feliciano"
+                src={process.env.PUBLIC_URL + "/pfp.jpg"}
               />
-              {photo ? <img alt="Your profile" src={photo} /> : <span>JD</span>}
-              <b>+</b>
-            </label>
+            </div>
             <div>
               <strong>Jorge Dominic M. Feliciano</strong>
               <small>
@@ -157,9 +139,6 @@ export default function App() {
                 practice, contribute to a team, and grow through hands-on
                 experience.
               </p>
-              <a className="text-link" href="#projects">
-                Explore my projects <span>&#8595;</span>
-              </a>
             </div>
           </section>
         </section>
@@ -390,7 +369,6 @@ export default function App() {
       </main>
       <footer>
         <span>&copy; {new Date().getFullYear()} JorjDominic</span>
-        <span>Made with intention. &#10035;</span>
         <a href="#home">Back to top &#8593;</a>
       </footer>
       <button

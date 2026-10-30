@@ -1400,3 +1400,8 @@ html {
     display: none;
   }
 }
+
+.profile-photo {
+  cursor: default;
+  overflow: hidden;
+}
