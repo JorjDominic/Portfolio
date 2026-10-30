@@ -18,12 +18,12 @@ test("dark mode toggles and persists across visits", () => {
 test("repository project opens with its GitHub source and closes", () => {
   render(<App />);
   fireEvent.click(
-    screen.getByRole("button", { name: "View ActiBind project" }),
+    screen.getByRole("button", { name: "View CarmeLink project" }),
   );
   expect(screen.getByRole("dialog")).toBeInTheDocument();
   expect(screen.getByRole("link", { name: /View on GitHub/ })).toHaveAttribute(
     "href",
-    "https://github.com/JorjDominic/ActiBind",
+    "https://github.com/JorjDominic/CarmeLink",
   );
   fireEvent.click(screen.getByRole("button", { name: "Close project" }));
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -67,13 +67,13 @@ test("slideshow advances automatically and pauses on hover", () => {
   const { unmount } = render(<App />);
   try {
     expect(
-      screen.getByRole("button", { name: "View ActiBind project" }),
+      screen.getByRole("button", { name: "View CarmeLink project" }),
     ).toBeInTheDocument();
     act(() => {
       jest.advanceTimersByTime(6500);
     });
     expect(
-      screen.getByRole("button", { name: "View CarmeLink project" }),
+      screen.getByRole("button", { name: "View ActiBind project" }),
     ).toBeInTheDocument();
     fireEvent.mouseEnter(
       screen.getByRole("region", { name: "Selected projects" }),
@@ -82,7 +82,7 @@ test("slideshow advances automatically and pauses on hover", () => {
       jest.advanceTimersByTime(13000);
     });
     expect(
-      screen.getByRole("button", { name: "View CarmeLink project" }),
+      screen.getByRole("button", { name: "View ActiBind project" }),
     ).toBeInTheDocument();
     fireEvent.mouseLeave(
       screen.getByRole("region", { name: "Selected projects" }),
@@ -107,7 +107,7 @@ test("slideshow navigation wraps and Biyahe Bulacan links to the repository", ()
   ).toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: "Next project" }));
   expect(
-    screen.getByRole("button", { name: "View ActiBind project" }),
+    screen.getByRole("button", { name: "View CarmeLink project" }),
   ).toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: "Show Biyahe Bulacan" }));
   fireEvent.click(

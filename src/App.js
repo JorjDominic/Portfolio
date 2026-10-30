@@ -2,23 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import "./App.css";
 const projects = [
   {
-    name: "ActiBind",
-    category: "Mobile app / Digital wellbeing",
-    tagline: "Bring plans and device habits together.",
-    description:
-      "A Flutter activity planner that combines schedules, routines, tasks, and device-usage insights in one application.",
-    stack: ["Flutter", "Dart", "Supabase", "Firebase"],
-    features: [
-      "Activity scheduling, recurring routines, tasks, and notes.",
-      "Android app-usage tracking and synchronized computer activity.",
-      "Reminders, home-screen widgets, and privacy-controlled AI insights.",
-    ],
-    status: "Development project",
-    image: "actibind.png",
-    repo: "ActiBind",
-    theme: "activity",
-  },
-  {
     name: "CarmeLink",
     category: "Mobile app / Dormitory management",
     tagline: "One place for everyday dormitory operations.",
@@ -34,6 +17,23 @@ const projects = [
     image: "carmelink.jpg",
     repo: "CarmeLink",
     theme: "dormitory",
+  },
+  {
+    name: "ActiBind",
+    category: "Mobile app / Digital wellbeing",
+    tagline: "Bring plans and device habits together.",
+    description:
+      "A Flutter activity planner that combines schedules, routines, tasks, and device-usage insights in one application.",
+    stack: ["Flutter", "Dart", "Supabase", "Firebase"],
+    features: [
+      "Activity scheduling, recurring routines, tasks, and notes.",
+      "Android app-usage tracking and synchronized computer activity.",
+      "Reminders, home-screen widgets, and privacy-controlled AI insights.",
+    ],
+    status: "Development project",
+    image: "actibind.png",
+    repo: "ActiBind",
+    theme: "activity",
   },
   {
     name: "eLikas",
