@@ -1,4 +1,4 @@
-﻿import { render, screen, fireEvent } from "@testing-library/react";
+﻿import { render, screen, fireEvent, act } from "@testing-library/react";
 import App from "./App";
 beforeEach(() => {
   localStorage.clear();
@@ -60,4 +60,61 @@ test("photo closes using the close button or backdrop", () => {
   fireEvent.click(trigger);
   fireEvent.click(screen.getByRole("dialog").parentElement);
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+});
+
+test("slideshow advances automatically and pauses on hover", () => {
+  jest.useFakeTimers();
+  const { unmount } = render(<App />);
+  try {
+    expect(
+      screen.getByRole("button", { name: "View ActiBind project" }),
+    ).toBeInTheDocument();
+    act(() => {
+      jest.advanceTimersByTime(6500);
+    });
+    expect(
+      screen.getByRole("button", { name: "View CarmeLink project" }),
+    ).toBeInTheDocument();
+    fireEvent.mouseEnter(
+      screen.getByRole("region", { name: "Selected projects" }),
+    );
+    act(() => {
+      jest.advanceTimersByTime(13000);
+    });
+    expect(
+      screen.getByRole("button", { name: "View CarmeLink project" }),
+    ).toBeInTheDocument();
+    fireEvent.mouseLeave(
+      screen.getByRole("region", { name: "Selected projects" }),
+    );
+    act(() => {
+      jest.advanceTimersByTime(6500);
+    });
+    expect(
+      screen.getByRole("button", { name: "View eLikas project" }),
+    ).toBeInTheDocument();
+  } finally {
+    unmount();
+    jest.useRealTimers();
+  }
+});
+
+test("slideshow navigation wraps and Biyahe Bulacan links to the repository", () => {
+  render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Previous project" }));
+  expect(
+    screen.getByRole("button", { name: "View Biyahe Bulacan project" }),
+  ).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Next project" }));
+  expect(
+    screen.getByRole("button", { name: "View ActiBind project" }),
+  ).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Show Biyahe Bulacan" }));
+  fireEvent.click(
+    screen.getByRole("button", { name: "View Biyahe Bulacan project" }),
+  );
+  expect(screen.getByRole("link", { name: /View on GitHub/ })).toHaveAttribute(
+    "href",
+    "https://github.com/JorjDominic/byahe-bulacan",
+  );
 });

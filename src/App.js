@@ -70,7 +70,25 @@ const projects = [
       ["Backend", "SureShopPH---Backend-Layer"],
       ["Browser extension", "SureShopPH---Browser-Extension"],
     ],
+    image: "sureshopph.png",
     theme: "shopping",
+  },
+  {
+    name: "Biyahe Bulacan",
+    category: "Web app / Travel directory",
+    tagline: "Discover a little more of Bulacan.",
+    description:
+      "An interactive Bulacan travel directory with destination discovery, reviews, itinerary planning, and commuting guidance.",
+    stack: ["React", "JavaScript", "Firebase", "Google Maps"],
+    features: [
+      "Browse destinations and explore detailed spot information and reviews.",
+      "Build travel itineraries with destination maps and route guidance.",
+      "Community feeds and administrative destination-management tools.",
+    ],
+    status: "Travel directory project",
+    image: "biyahebulacan.png",
+    repo: "byahe-bulacan",
+    theme: "travel",
   },
 ];
 const skillGroups = [
@@ -150,6 +168,56 @@ export default function App() {
   }, [photoOpen]);
   const [project, setProject] = useState(null);
   const [motionPaused, setMotionPaused] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [slidesPaused, setSlidesPaused] = useState(false);
+  const [slidesHovered, setSlidesHovered] = useState(false);
+  const [slidesFocused, setSlidesFocused] = useState(false);
+  const [pageHidden, setPageHidden] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(
+    () => !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches,
+  );
+  const touchStart = useRef(null);
+  useEffect(() => {
+    const media = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+    const onMotion = () => setReducedMotion(!!media?.matches);
+    const onVisibility = () => setPageHidden(document.hidden);
+    media?.addEventListener?.("change", onMotion);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      media?.removeEventListener?.("change", onMotion);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
+  useEffect(() => {
+    if (
+      slidesPaused ||
+      slidesHovered ||
+      slidesFocused ||
+      pageHidden ||
+      reducedMotion ||
+      photoOpen ||
+      project !== null
+    )
+      return;
+    const timer = window.setTimeout(
+      () => setActiveSlide((index) => (index + 1) % projects.length),
+      6500,
+    );
+    return () => window.clearTimeout(timer);
+  }, [
+    activeSlide,
+    slidesPaused,
+    slidesHovered,
+    slidesFocused,
+    pageHidden,
+    reducedMotion,
+    photoOpen,
+    project,
+  ]);
+  const goToSlide = (index) => {
+    setActiveSlide((index + projects.length) % projects.length);
+    setSlidesPaused(true);
+  };
   const [dark, setDark] = useState(() => {
     const saved = localStorage.getItem("portfolio-theme");
     return saved
@@ -265,61 +333,163 @@ export default function App() {
         <section id="projects" className="work">
           <div className="section-title">
             <h2>
-              Selected projects <small>/ 01&mdash;04</small>
+              Selected projects <small>/ 01&mdash;05</small>
             </h2>
             <span>A SELECTION FROM MY GITHUB</span>
           </div>
-          <div className="projects">
-            {projects.map((p, i) => (
-              <button
-                className="project repository-project"
-                key={p.name}
-                onClick={() => setProject(i)}
-                aria-label={"View " + p.name + " project"}
+          <div
+            className="project-slideshow"
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Selected projects"
+            onMouseEnter={() => setSlidesHovered(true)}
+            onMouseLeave={() => setSlidesHovered(false)}
+            onFocusCapture={() => setSlidesFocused(true)}
+            onBlurCapture={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget))
+                setSlidesFocused(false);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "ArrowRight") {
+                event.preventDefault();
+                goToSlide(activeSlide + 1);
+              }
+              if (event.key === "ArrowLeft") {
+                event.preventDefault();
+                goToSlide(activeSlide - 1);
+              }
+            }}
+          >
+            <div
+              className="project-viewport"
+              onTouchStart={(event) => {
+                touchStart.current = {
+                  x: event.touches[0].clientX,
+                  y: event.touches[0].clientY,
+                };
+              }}
+              onTouchEnd={(event) => {
+                if (!touchStart.current) return;
+                const dx =
+                  event.changedTouches[0].clientX - touchStart.current.x;
+                const dy =
+                  event.changedTouches[0].clientY - touchStart.current.y;
+                if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy))
+                  goToSlide(activeSlide + (dx < 0 ? 1 : -1));
+                touchStart.current = null;
+              }}
+            >
+              <div
+                className="project-slide-track"
+                style={{ transform: "translateX(-" + activeSlide * 100 + "%)" }}
+                aria-live={slidesPaused ? "polite" : "off"}
               >
-                <div className={"art repository-cover cover-" + p.theme}>
-                  <span className="cover-number">
-                    0{i + 1} / SELECTED PROJECT
-                  </span>
-                  <div className="project-emblem" aria-hidden="true">
-                    {p.image ? (
-                      <img
-                        src={process.env.PUBLIC_URL + "/projects/" + p.image}
-                        alt=""
-                        loading="lazy"
-                      />
-                    ) : (
-                      <svg
-                        viewBox="0 0 48 48"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                {projects.map((p, i) => (
+                  <article
+                    className="project-slide"
+                    key={p.name}
+                    role="group"
+                    aria-roledescription="slide"
+                    aria-label={
+                      i + 1 + " of " + projects.length + ": " + p.name
+                    }
+                    aria-hidden={i !== activeSlide}
+                    inert={i !== activeSlide}
+                  >
+                    <div className={"art repository-cover cover-" + p.theme}>
+                      <span className="cover-number">
+                        0{i + 1} / SELECTED PROJECT
+                      </span>
+                      <div className="project-emblem" aria-hidden="true">
+                        <img
+                          src={process.env.PUBLIC_URL + "/projects/" + p.image}
+                          alt=""
+                          loading={i === 0 ? "eager" : "lazy"}
+                        />
+                      </div>
+                      <strong className="cover-name">{p.name}</strong>
+                      <span className="cover-tagline">{p.tagline}</span>
+                    </div>
+                    <div className="slide-copy">
+                      <p className="eyebrow">{p.category}</p>
+                      <h3>{p.name}</h3>
+                      <p className="slide-description">{p.description}</p>
+                      <div className="project-stack">
+                        {p.stack.map((tech) => (
+                          <span key={tech}>{tech}</span>
+                        ))}
+                      </div>
+                      <button
+                        className="slide-details"
+                        aria-label={"View " + p.name + " project"}
+                        onClick={() => setProject(i)}
                       >
-                        <path d="m24 5 15 6v11c0 10-15 21-15 21S9 32 9 22V11z" />
-                        <path d="m17 23 5 5 10-11" />
-                      </svg>
-                    )}
-                  </div>
-                  <strong className="cover-name">{p.name}</strong>
-                  <span className="cover-tagline">{p.tagline}</span>
-                </div>
-                <div className="project-info">
-                  <div>
-                    <h3>{p.name}</h3>
-                    <p>{p.category}</p>
-                  </div>
-                  <span aria-hidden="true">&#8599;</span>
-                </div>
-                <p className="project-summary">{p.description}</p>
-                <div className="project-stack">
-                  {p.stack.map((tech) => (
-                    <span key={tech}>{tech}</span>
-                  ))}
-                </div>
-              </button>
-            ))}
+                        Explore project <span aria-hidden="true">&#8599;</span>
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+            <div className="slideshow-controls">
+              <div className="slide-pagination" aria-label="Choose a project">
+                {projects.map((p, i) => (
+                  <button
+                    key={p.name}
+                    className={
+                      "slide-dot" + (i === activeSlide ? " active" : "")
+                    }
+                    aria-label={"Show " + p.name}
+                    aria-current={i === activeSlide ? "true" : undefined}
+                    onClick={() => goToSlide(i)}
+                  >
+                    <span />
+                  </button>
+                ))}
+              </div>
+              <div className="slide-navigation">
+                <span className="slide-count">
+                  0{activeSlide + 1} <span>/ 0{projects.length}</span>
+                </span>
+                <button
+                  className="slide-control"
+                  aria-label="Previous project"
+                  onClick={() => goToSlide(activeSlide - 1)}
+                >
+                  &#8592;
+                </button>
+                <button
+                  className="slide-control"
+                  aria-label="Next project"
+                  onClick={() => goToSlide(activeSlide + 1)}
+                >
+                  &#8594;
+                </button>
+                {!reducedMotion && (
+                  <button
+                    className="slide-control slide-play"
+                    aria-label={
+                      slidesPaused
+                        ? "Play project slideshow"
+                        : "Pause project slideshow"
+                    }
+                    onClick={() => setSlidesPaused(!slidesPaused)}
+                  >
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      {slidesPaused ? (
+                        <path d="m8 5 11 7-11 7z" />
+                      ) : (
+                        <path d="M6 5h4v14H6zm8 0h4v14h-4z" />
+                      )}
+                    </svg>
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </section>
         <section
