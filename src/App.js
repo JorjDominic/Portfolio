@@ -134,7 +134,8 @@ export default function App() {
             <div>
               <strong>Jorge Dominic M. Feliciano</strong>
               <small>
-                Software Development &amp; Hardware/Networking Intern
+                Aspiring IT Professional | Software Development, Hardware &amp;
+                Networking
               </small>
             </div>
             <span className="availability">
