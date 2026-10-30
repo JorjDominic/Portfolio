@@ -1,25 +1,8 @@
-import logo from './logo.svg';
+import {useState} from 'react';
 import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const pairs=[['Palatino Linotype','Brandon Grotesque','classic'],['Adobe Caslon Italic','Avenir Light','editorial'],['Playfair Display','Futura','modern'],['Belinda','Brandon Grotesque','script'],['Amatic SC','Avenir Light','playful']];
+const projects=[['fern & form','A quieter kind of brand.','Brand identity','An example identity for a botanical studio, inspired by natural forms and thoughtful details.'],['forma','Room for a fresh perspective.','Web design','An example storefront exploring editorial layouts and objects for everyday living.']];
+export default function App(){
+ const [font,setFont]=useState(()=>Number(localStorage.getItem('font-pair'))||0),[open,setOpen]=useState(false),[photo,setPhoto]=useState(''),[project,setProject]=useState(null);
+ return <div className={'portfolio '+pairs[Math.min(font,4)][2]}><header><a className="logo" href="#home">yn<span>?</span></a><nav><a href="#work">Work</a><a href="#about">About</a><a href="mailto:hello@example.com">Let’s talk ?</a></nav></header><main id="home"><section className="hero"><div className="intro"><label className="avatar" title="Add your photo"><input type="file" accept="image/*" aria-label="Upload your profile photo" onChange={e=>{if(e.target.files[0]){const r=new FileReader();r.onload=()=>setPhoto(r.result);r.readAsDataURL(e.target.files[0]);}}}/>{photo?<img alt="Your profile" src={photo}/>:<span>YN</span>}<b>+</b></label><div><strong>Your Name</strong><small>Designer & creative thinker</small></div><span className="availability">? &nbsp; Open to opportunities</span></div><p className="eyebrow">A LITTLE CURIOSITY. A LOT OF CARE.</p><h1>Thoughtful design.<br/><span>Meaningful connections.</span></h1><div className="hero-bottom"><p>I turn ideas into clear, considered experiences.<br/>A little strategy, a little creativity, and a human touch.</p><a className="text-link" href="#work">Explore my work <span>?</span></a></div></section><section id="work" className="work"><div className="section-title"><h2>Selected work <small>/ 01—02</small></h2><span>A FEW THINGS I’VE IMAGINED</span></div><div className="projects">{projects.map((p,i)=><button className="project" key={p[0]} onClick={()=>setProject(i)}><div className={'art art-'+i}><small className="art-label">CONCEPT PROJECT · 0{i+1}</small>{i===0?<><div className="leaf one"/><div className="leaf two"/><div className="brand"><span>?</span><strong>fern & form</strong><small>GROW INTO YOUR OWN.</small></div></>:<><div className="mock"><div className="mock-nav">forma <small>Shop &nbsp; About &nbsp; ?</small></div><h3>Objects for<br/>everyday living.</h3><small className="mock-caption">LESS, BUT BETTER.</small><div className="disc"/><div className="vase"><i/></div></div><small className="art-bottom">A STUDY IN SIMPLE THINGS.</small></>}</div><div className="project-info"><div><h3>{p[1]}</h3><p>{p[2]} &nbsp;·&nbsp; 2026</p></div><span>?</span></div></button>)}</div></section><section className="about" id="about"><div><p className="eyebrow">THE PERSON BEHIND THE PIXELS</p><h2>Good work starts<br/>with a little <em>curiosity.</em></h2></div><div className="about-copy"><p>I’m Your Name, a designer who believes the best ideas make things feel a little simpler, and a little more human.</p><p>This is your space to share your story. Add what you love doing, what you’re learning, and the kind of work you’d like to make next.</p><div className="skills"><span>Visual design</span><span>Web experiences</span><span>Creative thinking</span></div></div></section><section className="contact"><div><p className="eyebrow">HAVE SOMETHING IN MIND?</p><h2>Let’s make it <em>happen.</em></h2></div><a className="button" href="mailto:hello@example.com">Say hello <span>?</span></a></section></main><footer><span>© {new Date().getFullYear()} Your Name</span><span>Made with intention. ?</span><a href="#home">Back to top ?</a></footer><aside className="font-picker">{open&&<div className="font-panel"><div className="panel-title"><strong>Find your type.</strong><button aria-label="Close font selector" onClick={()=>setOpen(false)}>×</button></div><p>Try the combinations from your reference.</p>{pairs.map((p,i)=><button className={'font-option '+(font===i?'selected':'')} key={p[0]} aria-pressed={font===i} onClick={()=>{setFont(i);localStorage.setItem('font-pair',i)}}><span>0{i+1}</span><div><strong>{p[0]}</strong><small>{p[1]}</small></div><span>{font===i?'?':'?'}</span></button>)}<p className="font-note">Similar web fonts are used when an original font isn’t installed.</p></div>}<button className="font-toggle" aria-expanded={open} onClick={()=>setOpen(!open)}><span>Aa</span>Try a font pairing <b>{open?'-':'+'}</b></button></aside>{project!==null&&<div className="backdrop" onClick={()=>setProject(null)}><section className="modal" role="dialog" aria-modal="true" aria-label={projects[project][1]} onClick={e=>e.stopPropagation()} onKeyDown={e=>{if(e.key==='Escape')setProject(null)}}><button autoFocus className="close" aria-label="Close project" onClick={()=>setProject(null)}>×</button><p className="eyebrow">SAMPLE PROJECT / 0{project+1}</p><h2>{projects[project][1]}</h2><p>{projects[project][3]}</p><p>Make this yours: replace this concept with your own project, process, and final work.</p><button className="button" onClick={()=>setProject(null)}>Back to work ?</button></section></div>}</div>
 }
-
-export default App;
