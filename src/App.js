@@ -44,6 +44,7 @@ const skillGroups = [
 export default function App() {
   const [photo, setPhoto] = useState(""),
     [project, setProject] = useState(null);
+  const [motionPaused, setMotionPaused] = useState(false);
   const [dark, setDark] = useState(() => {
     const saved = localStorage.getItem("portfolio-theme");
     return saved
@@ -69,9 +70,8 @@ export default function App() {
           </svg>
         </a>
         <nav>
-          <a href="#projects">Projects</a>
+          <a href="#projects">Projects &amp; Technologies</a>
           <a href="#about">About</a>
-          <a href="#technologies">Technologies</a>
           <a
             href="https://github.com/JorjDominic"
             target="_blank"
@@ -80,15 +80,6 @@ export default function App() {
             GitHub &#8599;
           </a>
           <a href="mailto:hello@example.com">Contact me &#8599;</a>
-          <button
-            className="theme-toggle"
-            aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-            aria-pressed={dark}
-            onClick={() => setDark(!dark)}
-          >
-            <span aria-hidden="true">{dark ? "\u2600" : "\u263e"}</span>
-            <span>{dark ? "Light mode" : "Dark mode"}</span>
-          </button>
         </nav>
       </header>
       <main id="home">
@@ -120,6 +111,7 @@ export default function App() {
               INTERNSHIP AVAILABILITY &middot; NOVEMBER 2026
             </span>
           </div>
+          <hr className="profile-divider" />
           <section
             className="about about-intro"
             id="about"
@@ -220,46 +212,85 @@ export default function App() {
         >
           <div className="section-title">
             <h2 id="technologies-title">Technologies &amp; tools</h2>
-            <span>WHAT I BUILD AND LEARN WITH</span>
+            <div className="technology-controls">
+              <span>WHAT I BUILD AND LEARN WITH</span>
+              <button
+                className="carousel-control"
+                onClick={() => setMotionPaused(!motionPaused)}
+                aria-label={
+                  motionPaused
+                    ? "Play technology carousel"
+                    : "Pause technology carousel"
+                }
+                aria-pressed={motionPaused}
+                title={motionPaused ? "Play animation" : "Pause animation"}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+                  {motionPaused ? (
+                    <path d="m8 5 11 7-11 7z" />
+                  ) : (
+                    <path d="M6 5h4v14H6zm8 0h4v14h-4z" />
+                  )}
+                </svg>
+              </button>
+            </div>
           </div>
           {skillGroups.map((group) => (
             <div className="technology-group" key={group.title}>
               <h3 className="eyebrow">{group.title}</h3>
-              <ul className="technology-grid">
-                {group.items.map(([name, icon]) => (
-                  <li key={name}>
-                    <div className="technology-icon" aria-hidden="true">
-                      {icon === "windows" ? (
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M2 4.5 10.5 3.3v8H2zm10-1.4L22 1.7v9.6h-10zM2 12.8h8.5v8L2 19.6zm10 0h10v9.5l-10-1.4z" />
-                        </svg>
-                      ) : icon === "powershell" ? (
-                        <svg
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.6"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="m12 4 10 8-10 8L2 12z" />
-                          <path d="m8 9 4 3-4 3m5 0h4" />
-                        </svg>
-                      ) : (
-                        <img
-                          src={
-                            process.env.PUBLIC_URL + "/icons/" + icon + ".svg"
-                          }
-                          alt=""
-                          width="25"
-                          height="25"
-                        />
-                      )}
-                    </div>
-                    <span>{name}</span>
-                  </li>
-                ))}
-              </ul>
+              <div
+                className={
+                  "technology-carousel" + (motionPaused ? " is-paused" : "")
+                }
+              >
+                <div className="technology-track">
+                  {[0, 1].map((copy) => (
+                    <ul
+                      className="technology-grid"
+                      key={copy}
+                      aria-label={copy === 0 ? group.title : undefined}
+                      aria-hidden={copy === 1 ? true : undefined}
+                    >
+                      {group.items.map(([name, icon]) => (
+                        <li key={name}>
+                          <div className="technology-icon" aria-hidden="true">
+                            {icon === "windows" ? (
+                              <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M2 4.5 10.5 3.3v8H2zm10-1.4L22 1.7v9.6h-10zM2 12.8h8.5v8L2 19.6zm10 0h10v9.5l-10-1.4z" />
+                              </svg>
+                            ) : icon === "powershell" ? (
+                              <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.6"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              >
+                                <path d="m12 4 10 8-10 8L2 12z" />
+                                <path d="m8 9 4 3-4 3m5 0h4" />
+                              </svg>
+                            ) : (
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/icons/" +
+                                  icon +
+                                  ".svg"
+                                }
+                                alt=""
+                                width="25"
+                                height="25"
+                              />
+                            )}
+                          </div>
+                          <span>{name}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ))}
+                </div>
+              </div>
             </div>
           ))}
         </section>
@@ -280,6 +311,32 @@ export default function App() {
         <span>Made with intention. &#10035;</span>
         <a href="#home">Back to top &#8593;</a>
       </footer>
+      <button
+        className="theme-toggle floating-theme-toggle"
+        aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+        title={dark ? "Switch to light mode" : "Switch to dark mode"}
+        aria-pressed={dark}
+        onClick={() => setDark(!dark)}
+      >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          {dark ? (
+            <>
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
+            </>
+          ) : (
+            <path d="M20.9 13.1A9 9 0 0 1 10.9 3.1 9 9 0 1 0 20.9 13.1Z" />
+          )}
+        </svg>
+      </button>
       {project !== null && (
         <div className="backdrop" onClick={() => setProject(null)}>
           <section
