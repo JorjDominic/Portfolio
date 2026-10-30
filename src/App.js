@@ -230,10 +230,7 @@ export default function App() {
   return (
     <div className="portfolio editorial">
       <div
-        className={
-          "ambient-technologies" +
-          (motionPaused || showAllTech ? " is-paused" : "")
-        }
+        className={"ambient-technologies" + (motionPaused ? " is-paused" : "")}
         aria-hidden="true"
       >
         {[0, 1, 2].map((row) => (

@@ -156,7 +156,7 @@ test("view all shows one complete static list per group and restores carousel mo
     screen.getByRole("list", { name: "Technologies" }),
   ).toBeInTheDocument();
   expect(screen.getByRole("list", { name: "Tools" })).toBeInTheDocument();
-  expect(container.querySelector(".ambient-technologies")).toHaveClass(
+  expect(container.querySelector(".ambient-technologies")).not.toHaveClass(
     "is-paused",
   );
   expect(

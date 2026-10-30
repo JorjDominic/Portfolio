@@ -1,70 +1,64 @@
-# Getting Started with Create React App
+﻿# JorjDominic Portfolio
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React portfolio with a project slideshow, technology/tool carousels, a static View all mode, photo enlargement, and a saved light/dark preference. Dark mode is the default.
 
-## Available Scripts
+## Requirements
 
-In the project directory, you can run:
+- Node.js 24.x (also specified in package.json and .nvmrc)
+- npm
 
-### `npm start`
+## Local development
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```sh
+npm ci
+npm start
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Checks and production build
 
-### `npm test`
+```sh
+npm test -- --watchAll=false
+npm run build
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The deployable static website is generated in `build/`. Commit the source and `package-lock.json`; Vercel builds the output automatically.
 
-### `npm run build`
+## Deploy to Vercel
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Push this project, including `vercel.json` and `package-lock.json`, to your GitHub repository.
+2. In Vercel, choose **Add New > Project** and import the repository.
+3. Set the root directory to the folder containing `package.json` (the repository root for this project).
+4. Confirm these settings, supplied by `vercel.json`:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Setting               | Value            |
+| --------------------- | ---------------- |
+| Framework preset      | Create React App |
+| Install command       | `npm ci`         |
+| Build command         | `npm run build`  |
+| Output directory      | `build`          |
+| Node.js               | 24.x             |
+| Environment variables | None required    |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+5. Deploy. Later pushes to the connected production branch can trigger new deployments.
 
-### `npm run eject`
+The page uses fragment links such as `#about`, `#projects`, and `#socials`; no SPA catch-all rewrite or backend functions are needed. Profile images, project logos, and icons are served from `public/`. Google Fonts requires internet access and has local fallback fonts.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+For a CLI deployment, run `npx vercel` from the project root, then `npx vercel --prod` when ready to publish production.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`.vercelignore` excludes local dependencies, existing build output, and Sites-specific `.openai` metadata from CLI uploads. The existing Sites configuration is preserved separately and is not required by Vercel.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Content and styling
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- `src/App.js`: profile, project data, technology/tool lists, social links, and interactions
+- `src/App.css`: layout, themes, responsive rules, and animations
+- `src/index.css`: fonts and base styles
+- `public/pfp.jpg`: profile picture
+- `public/projects/`: project logos
+- `public/icons/`: technology, tool, and social icons
+- `public/index.html`: browser title, description, and initial theme
 
-## Learn More
+## References
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [Vercel Create React App deployment](https://vercel.com/docs/frameworks/frontend/create-react-app)
+- [Vercel project configuration](https://vercel.com/docs/project-configuration/vercel-json)
+- [Vercel Node.js versions](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions)
