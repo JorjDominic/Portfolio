@@ -63,36 +63,46 @@ test("photo closes using the close button or backdrop", () => {
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 });
 
-test("slideshow advances automatically and pauses on hover", () => {
+test("slideshow starts on load, continues on hover and after navigation, and can pause and resume", () => {
   jest.useFakeTimers();
   const { unmount } = render(<App />);
   try {
     expect(
       screen.getByRole("button", { name: "View CarmeLink project" }),
     ).toBeInTheDocument();
-    act(() => {
-      jest.advanceTimersByTime(6500);
-    });
-    expect(
-      screen.getByRole("button", { name: "View ActiBind project" }),
-    ).toBeInTheDocument();
     fireEvent.mouseEnter(
       screen.getByRole("region", { name: "Selected projects" }),
     );
     act(() => {
-      jest.advanceTimersByTime(13000);
+      jest.advanceTimersByTime(5000);
     });
     expect(
       screen.getByRole("button", { name: "View ActiBind project" }),
     ).toBeInTheDocument();
-    fireEvent.mouseLeave(
-      screen.getByRole("region", { name: "Selected projects" }),
-    );
+    fireEvent.click(screen.getByRole("button", { name: "Next project" }));
     act(() => {
-      jest.advanceTimersByTime(6500);
+      jest.advanceTimersByTime(5000);
     });
     expect(
-      screen.getByRole("button", { name: "View eLikas project" }),
+      screen.getByRole("button", { name: "View SureShopPH project" }),
+    ).toBeInTheDocument();
+    fireEvent.click(
+      screen.getByRole("button", { name: "Pause project slideshow" }),
+    );
+    act(() => {
+      jest.advanceTimersByTime(10000);
+    });
+    expect(
+      screen.getByRole("button", { name: "View SureShopPH project" }),
+    ).toBeInTheDocument();
+    const play = screen.getByRole("button", { name: "Play project slideshow" });
+    fireEvent.focus(play);
+    fireEvent.click(play);
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+    expect(
+      screen.getByRole("button", { name: "View Biyahe Bulacan project" }),
     ).toBeInTheDocument();
   } finally {
     unmount();

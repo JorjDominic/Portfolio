@@ -178,53 +178,40 @@ export default function App() {
   const [motionPaused, setMotionPaused] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [slidesPaused, setSlidesPaused] = useState(false);
-  const [slidesHovered, setSlidesHovered] = useState(false);
   const [slidesFocused, setSlidesFocused] = useState(false);
   const [pageHidden, setPageHidden] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(
-    () => !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches,
-  );
   const touchStart = useRef(null);
   useEffect(() => {
-    const media = window.matchMedia?.("(prefers-reduced-motion: reduce)");
-    const onMotion = () => setReducedMotion(!!media?.matches);
     const onVisibility = () => setPageHidden(document.hidden);
-    media?.addEventListener?.("change", onMotion);
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
-      media?.removeEventListener?.("change", onMotion);
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
   useEffect(() => {
     if (
       slidesPaused ||
-      slidesHovered ||
       slidesFocused ||
       pageHidden ||
-      reducedMotion ||
       photoOpen ||
       project !== null
     )
       return;
     const timer = window.setTimeout(
       () => setActiveSlide((index) => (index + 1) % projects.length),
-      6500,
+      5000,
     );
     return () => window.clearTimeout(timer);
   }, [
     activeSlide,
     slidesPaused,
-    slidesHovered,
     slidesFocused,
     pageHidden,
-    reducedMotion,
     photoOpen,
     project,
   ]);
   const goToSlide = (index) => {
     setActiveSlide((index + projects.length) % projects.length);
-    setSlidesPaused(true);
   };
   const [dark, setDark] = useState(() => {
     const saved = localStorage.getItem("portfolio-theme");
@@ -348,9 +335,9 @@ export default function App() {
             role="region"
             aria-roledescription="carousel"
             aria-label="Selected projects"
-            onMouseEnter={() => setSlidesHovered(true)}
-            onMouseLeave={() => setSlidesHovered(false)}
-            onFocusCapture={() => setSlidesFocused(true)}
+            onFocusCapture={(event) =>
+              setSlidesFocused(!!event.target.closest(".project-slide"))
+            }
             onBlurCapture={(event) => {
               if (!event.currentTarget.contains(event.relatedTarget))
                 setSlidesFocused(false);
@@ -471,29 +458,28 @@ export default function App() {
                 >
                   &#8594;
                 </button>
-                {!reducedMotion && (
-                  <button
-                    className="slide-control slide-play"
-                    aria-label={
-                      slidesPaused
-                        ? "Play project slideshow"
-                        : "Pause project slideshow"
-                    }
-                    onClick={() => setSlidesPaused(!slidesPaused)}
+                <button
+                  className="slide-control slide-play"
+                  aria-label={
+                    slidesPaused
+                      ? "Play project slideshow"
+                      : "Pause project slideshow"
+                  }
+                  aria-pressed={slidesPaused}
+                  onClick={() => setSlidesPaused(!slidesPaused)}
+                >
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
                   >
-                    <svg
-                      aria-hidden="true"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      {slidesPaused ? (
-                        <path d="m8 5 11 7-11 7z" />
-                      ) : (
-                        <path d="M6 5h4v14H6zm8 0h4v14h-4z" />
-                      )}
-                    </svg>
-                  </button>
-                )}
+                    {slidesPaused ? (
+                      <path d="m8 5 11 7-11 7z" />
+                    ) : (
+                      <path d="M6 5h4v14H6zm8 0h4v14h-4z" />
+                    )}
+                  </svg>
+                </button>
               </div>
             </div>
           </div>
