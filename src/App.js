@@ -348,9 +348,11 @@ export default function App() {
               </a>
             </li>
             <li>
-              <span
-                className="social-link social-pending"
-                aria-label="Facebook profile coming soon"
+              <a
+                className="social-link"
+                href="https://www.facebook.com/feliciano.jorge.dominic/"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <span className="social-icon">
                   <img
@@ -358,15 +360,18 @@ export default function App() {
                     alt=""
                   />
                 </span>
-                <span>
-                  Facebook<small>Coming soon</small>
+                <span>Facebook</span>
+                <span className="social-arrow" aria-hidden="true">
+                  &#8599;
                 </span>
-              </span>
+              </a>
             </li>
             <li>
-              <span
-                className="social-link social-pending"
-                aria-label="LinkedIn profile coming soon"
+              <a
+                className="social-link"
+                href="https://www.linkedin.com/in/jorge-dominic-feliciano-08256640b/"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <span className="social-icon">
                   <img
@@ -374,10 +379,11 @@ export default function App() {
                     alt=""
                   />
                 </span>
-                <span>
-                  LinkedIn<small>Coming soon</small>
+                <span>LinkedIn</span>
+                <span className="social-arrow" aria-hidden="true">
+                  &#8599;
                 </span>
-              </span>
+              </a>
             </li>
           </ul>
         </section>
