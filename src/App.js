@@ -100,7 +100,7 @@ export default function App() {
           >
             GitHub &#8599;
           </a>
-          <a href="mailto:hello@example.com">Contact me &#8599;</a>
+          <a href="#socials">Contact me</a>
         </nav>
       </header>
       <main id="home">
@@ -129,7 +129,7 @@ export default function App() {
               </small>
             </div>
             <span className="availability">
-              <span className="education">NUB BSIT</span>
+              <span className="education">NU Baliwag BSIT</span>
               <span>INTERNSHIP AVAILABILITY &middot; NOVEMBER 2026</span>
             </span>
           </div>
@@ -316,16 +316,70 @@ export default function App() {
             </div>
           ))}
         </section>
-        <section className="contact">
+        <section
+          className="contact socials"
+          id="socials"
+          aria-labelledby="socials-title"
+        >
           <div>
-            <p className="eyebrow">HAVE SOMETHING IN MIND?</p>
-            <h2>
-              Let's make it <em>happen.</em>
+            <p className="eyebrow">FIND ME ONLINE</p>
+            <h2 id="socials-title">
+              Let's <em>connect.</em>
             </h2>
           </div>
-          <a className="button" href="mailto:hello@example.com">
-            Say hello <span>&#8599;</span>
-          </a>
+          <ul className="social-links" aria-label="Social profiles">
+            <li>
+              <a
+                className="social-link"
+                href="https://github.com/JorjDominic"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="social-icon">
+                  <img
+                    src={process.env.PUBLIC_URL + "/icons/github.svg"}
+                    alt=""
+                  />
+                </span>
+                <span>GitHub</span>
+                <span className="social-arrow" aria-hidden="true">
+                  &#8599;
+                </span>
+              </a>
+            </li>
+            <li>
+              <span
+                className="social-link social-pending"
+                aria-label="Facebook profile coming soon"
+              >
+                <span className="social-icon">
+                  <img
+                    src={process.env.PUBLIC_URL + "/icons/facebook.svg"}
+                    alt=""
+                  />
+                </span>
+                <span>
+                  Facebook<small>Coming soon</small>
+                </span>
+              </span>
+            </li>
+            <li>
+              <span
+                className="social-link social-pending"
+                aria-label="LinkedIn profile coming soon"
+              >
+                <span className="social-icon">
+                  <img
+                    src={process.env.PUBLIC_URL + "/icons/linkedin.svg"}
+                    alt=""
+                  />
+                </span>
+                <span>
+                  LinkedIn<small>Coming soon</small>
+                </span>
+              </span>
+            </li>
+          </ul>
         </section>
       </main>
       <footer>
