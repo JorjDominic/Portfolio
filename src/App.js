@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 const projects = [
   [
@@ -42,6 +42,27 @@ const skillGroups = [
 ];
 
 export default function App() {
+  const headerRef = useRef(null);
+  useEffect(() => {
+    const header = headerRef.current;
+    const updateOffset = () =>
+      document.documentElement.style.setProperty(
+        "--header-height",
+        `${header.getBoundingClientRect().height}px`,
+      );
+    updateOffset();
+    const observer =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(updateOffset)
+        : null;
+    observer?.observe(header);
+    window.addEventListener("resize", updateOffset);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener("resize", updateOffset);
+      document.documentElement.style.removeProperty("--header-height");
+    };
+  }, []);
   const [photo, setPhoto] = useState(""),
     [project, setProject] = useState(null);
   const [motionPaused, setMotionPaused] = useState(false);
@@ -57,7 +78,7 @@ export default function App() {
   }, [dark]);
   return (
     <div className="portfolio editorial">
-      <header>
+      <header ref={headerRef}>
         <a className="logo" href="#home">
           JorjDominic
           <svg
@@ -70,8 +91,8 @@ export default function App() {
           </svg>
         </a>
         <nav>
-          <a href="#projects">Projects &amp; Technologies</a>
           <a href="#about">About</a>
+          <a href="#projects">Projects &amp; Technologies</a>
           <a
             href="https://github.com/JorjDominic"
             target="_blank"
@@ -108,7 +129,8 @@ export default function App() {
               </small>
             </div>
             <span className="availability">
-              INTERNSHIP AVAILABILITY &middot; NOVEMBER 2026
+              <span className="education">NUB BSIT</span>
+              <span>INTERNSHIP AVAILABILITY &middot; NOVEMBER 2026</span>
             </span>
           </div>
           <hr className="profile-divider" />
