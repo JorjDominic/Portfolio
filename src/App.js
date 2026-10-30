@@ -181,6 +181,7 @@ export default function App() {
   }, [photoOpen]);
   const [project, setProject] = useState(null);
   const [motionPaused, setMotionPaused] = useState(false);
+  const [showAllTech, setShowAllTech] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [slidesPaused, setSlidesPaused] = useState(false);
   const [slidesFocused, setSlidesFocused] = useState(false);
@@ -229,7 +230,10 @@ export default function App() {
   return (
     <div className="portfolio editorial">
       <div
-        className={"ambient-technologies" + (motionPaused ? " is-paused" : "")}
+        className={
+          "ambient-technologies" +
+          (motionPaused || showAllTech ? " is-paused" : "")
+        }
         aria-hidden="true"
       >
         {[0, 1, 2].map((row) => (
@@ -499,84 +503,102 @@ export default function App() {
             <div className="technology-controls">
               <span>WHAT I BUILD AND LEARN WITH</span>
               <button
-                className="carousel-control"
-                onClick={() => setMotionPaused(!motionPaused)}
-                aria-label={
-                  motionPaused
-                    ? "Play technology carousel"
-                    : "Pause technology carousel"
-                }
-                aria-pressed={motionPaused}
-                title={motionPaused ? "Play animation" : "Pause animation"}
+                className="tech-view-toggle"
+                aria-pressed={showAllTech}
+                aria-controls="technology-content"
+                onClick={() => setShowAllTech(!showAllTech)}
               >
-                <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
-                  {motionPaused ? (
-                    <path d="m8 5 11 7-11 7z" />
-                  ) : (
-                    <path d="M6 5h4v14H6zm8 0h4v14h-4z" />
-                  )}
-                </svg>
+                {showAllTech ? "Carousel view" : "View all"}
               </button>
+              {!showAllTech && (
+                <button
+                  className="carousel-control"
+                  onClick={() => setMotionPaused(!motionPaused)}
+                  aria-label={
+                    motionPaused
+                      ? "Play technology carousel"
+                      : "Pause technology carousel"
+                  }
+                  aria-pressed={motionPaused}
+                  title={motionPaused ? "Play animation" : "Pause animation"}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    fill="currentColor"
+                  >
+                    {motionPaused ? (
+                      <path d="m8 5 11 7-11 7z" />
+                    ) : (
+                      <path d="M6 5h4v14H6zm8 0h4v14h-4z" />
+                    )}
+                  </svg>
+                </button>
+              )}
             </div>
           </div>
-          {skillGroups.map((group) => (
-            <div className="technology-group" key={group.title}>
-              <h3 className="eyebrow">{group.title}</h3>
-              <div
-                className={
-                  "technology-carousel" + (motionPaused ? " is-paused" : "")
-                }
-              >
-                <div className="technology-track">
-                  {[0, 1].map((copy) => (
-                    <ul
-                      className="technology-grid"
-                      key={copy}
-                      aria-label={copy === 0 ? group.title : undefined}
-                      aria-hidden={copy === 1 ? true : undefined}
-                    >
-                      {group.items.map(([name, icon]) => (
-                        <li key={name}>
-                          <div className="technology-icon" aria-hidden="true">
-                            {icon === "windows" ? (
-                              <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M2 4.5 10.5 3.3v8H2zm10-1.4L22 1.7v9.6h-10zM2 12.8h8.5v8L2 19.6zm10 0h10v9.5l-10-1.4z" />
-                              </svg>
-                            ) : icon === "powershell" ? (
-                              <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.6"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              >
-                                <path d="m12 4 10 8-10 8L2 12z" />
-                                <path d="m8 9 4 3-4 3m5 0h4" />
-                              </svg>
-                            ) : (
-                              <img
-                                src={
-                                  process.env.PUBLIC_URL +
-                                  "/icons/" +
-                                  icon +
-                                  ".svg"
-                                }
-                                alt=""
-                                width="25"
-                                height="25"
-                              />
-                            )}
-                          </div>
-                          <span>{name}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ))}
+          <div id="technology-content">
+            {skillGroups.map((group) => (
+              <div className="technology-group" key={group.title}>
+                <h3 className="eyebrow">{group.title}</h3>
+                <div
+                  className={
+                    "technology-carousel" +
+                    (motionPaused ? " is-paused" : "") +
+                    (showAllTech ? " is-static" : "")
+                  }
+                >
+                  <div className="technology-track">
+                    {(showAllTech ? [0] : [0, 1]).map((copy) => (
+                      <ul
+                        className="technology-grid"
+                        key={copy}
+                        aria-label={copy === 0 ? group.title : undefined}
+                        aria-hidden={copy === 1 ? true : undefined}
+                      >
+                        {group.items.map(([name, icon]) => (
+                          <li key={name}>
+                            <div className="technology-icon" aria-hidden="true">
+                              {icon === "windows" ? (
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                  <path d="M2 4.5 10.5 3.3v8H2zm10-1.4L22 1.7v9.6h-10zM2 12.8h8.5v8L2 19.6zm10 0h10v9.5l-10-1.4z" />
+                                </svg>
+                              ) : icon === "powershell" ? (
+                                <svg
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="1.6"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                >
+                                  <path d="m12 4 10 8-10 8L2 12z" />
+                                  <path d="m8 9 4 3-4 3m5 0h4" />
+                                </svg>
+                              ) : (
+                                <img
+                                  src={
+                                    process.env.PUBLIC_URL +
+                                    "/icons/" +
+                                    icon +
+                                    ".svg"
+                                  }
+                                  alt=""
+                                  width="25"
+                                  height="25"
+                                />
+                              )}
+                            </div>
+                            <span>{name}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </section>
         <section
           className="contact socials"

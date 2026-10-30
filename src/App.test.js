@@ -138,3 +138,35 @@ test("first visit defaults to dark mode and remembers a switch to light", () => 
   render(<App />);
   expect(document.documentElement).toHaveAttribute("data-theme", "light");
 });
+
+test("view all shows one complete static list per group and restores carousel mode", () => {
+  const { container } = render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "View all" }));
+  expect(screen.getByRole("button", { name: "Carousel view" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  expect(
+    container.querySelectorAll(".technology-carousel.is-static"),
+  ).toHaveLength(2);
+  expect(
+    container.querySelectorAll("#technology-content .technology-grid"),
+  ).toHaveLength(2);
+  expect(
+    screen.getByRole("list", { name: "Technologies" }),
+  ).toBeInTheDocument();
+  expect(screen.getByRole("list", { name: "Tools" })).toBeInTheDocument();
+  expect(container.querySelector(".ambient-technologies")).toHaveClass(
+    "is-paused",
+  );
+  expect(
+    screen.queryByRole("button", { name: "Pause technology carousel" }),
+  ).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Carousel view" }));
+  expect(
+    container.querySelectorAll(".technology-carousel.is-static"),
+  ).toHaveLength(0);
+  expect(
+    container.querySelectorAll("#technology-content .technology-grid"),
+  ).toHaveLength(4);
+});

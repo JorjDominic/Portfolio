@@ -1894,3 +1894,53 @@ html {
     transition: none;
   }
 }
+
+.tech-view-toggle {
+  min-height: 36px;
+  padding: 7px 14px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.tech-view-toggle:hover,
+.tech-view-toggle[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.technology-carousel.is-static {
+  overflow: visible;
+  mask-image: none;
+}
+.technology-carousel.is-static .technology-track {
+  width: 100%;
+  animation: none;
+  transform: none;
+}
+.technology-carousel.is-static .technology-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 28px 16px;
+  width: 100%;
+  padding: 4px 0;
+}
+.technology-carousel.is-static .technology-grid li {
+  width: auto;
+  min-width: 0;
+}
+@media (max-width: 700px) {
+  .technology-controls {
+    gap: 8px;
+  }
+  .technology-carousel.is-static .technology-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px 12px;
+  }
+}
+@media (max-width: 380px) {
+  .technology-carousel.is-static .technology-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
