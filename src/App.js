@@ -63,6 +63,28 @@ export default function App() {
       document.documentElement.style.removeProperty("--header-height");
     };
   }, []);
+  const [photoOpen, setPhotoOpen] = useState(false);
+  const photoCloseRef = useRef(null);
+  useEffect(() => {
+    if (!photoOpen) return;
+    const trigger = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    photoCloseRef.current?.focus();
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") setPhotoOpen(false);
+      if (event.key === "Tab") {
+        event.preventDefault();
+        photoCloseRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+      trigger?.focus();
+    };
+  }, [photoOpen]);
   const [project, setProject] = useState(null);
   const [motionPaused, setMotionPaused] = useState(false);
   const [dark, setDark] = useState(() => {
@@ -98,12 +120,17 @@ export default function App() {
       <main id="home">
         <section className="hero">
           <div className="intro">
-            <div className="avatar profile-photo">
+            <button
+              className="avatar profile-photo"
+              aria-label="Enlarge profile photo"
+              aria-haspopup="dialog"
+              onClick={() => setPhotoOpen(true)}
+            >
               <img
                 alt="Jorge Dominic M. Feliciano"
                 src={process.env.PUBLIC_URL + "/pfp.jpg"}
               />
-            </div>
+            </button>
             <div>
               <strong>Jorge Dominic M. Feliciano</strong>
               <small>
@@ -397,6 +424,36 @@ export default function App() {
           )}
         </svg>
       </button>
+      {photoOpen && (
+        <div
+          className="backdrop photo-backdrop"
+          onClick={(event) => {
+            if (event.target === event.currentTarget) setPhotoOpen(false);
+          }}
+        >
+          <section
+            className="photo-lightbox"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Profile photo of Jorge Dominic M. Feliciano"
+          >
+            <button
+              ref={photoCloseRef}
+              className="photo-close"
+              aria-label="Close enlarged photo"
+              onClick={() => setPhotoOpen(false)}
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <img
+              className="enlarged-photo"
+              src={process.env.PUBLIC_URL + "/pfp.jpg"}
+              alt="Jorge Dominic M. Feliciano"
+            />
+            <p>Jorge Dominic M. Feliciano</p>
+          </section>
+        </div>
+      )}
       {project !== null && (
         <div className="backdrop" onClick={() => setProject(null)}>
           <section

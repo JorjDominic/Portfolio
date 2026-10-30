@@ -24,3 +24,36 @@ test("sample project opens and closes", () => {
   fireEvent.click(screen.getByRole("button", { name: "Close project" }));
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 });
+
+test("profile photo enlarges, closes with Escape, and restores focus", () => {
+  render(<App />);
+  const trigger = screen.getByRole("button", { name: "Enlarge profile photo" });
+  trigger.focus();
+  fireEvent.click(trigger);
+  expect(
+    screen.getByRole("dialog", { name: /Profile photo of Jorge/ }),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole("button", { name: "Close enlarged photo" }),
+  ).toHaveFocus();
+  expect(document.body.style.overflow).toBe("hidden");
+  fireEvent.keyDown(window, { key: "Tab" });
+  expect(
+    screen.getByRole("button", { name: "Close enlarged photo" }),
+  ).toHaveFocus();
+  fireEvent.keyDown(window, { key: "Escape" });
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  expect(document.body.style.overflow).toBe("");
+  expect(trigger).toHaveFocus();
+});
+
+test("photo closes using the close button or backdrop", () => {
+  render(<App />);
+  const trigger = screen.getByRole("button", { name: "Enlarge profile photo" });
+  fireEvent.click(trigger);
+  fireEvent.click(screen.getByRole("button", { name: "Close enlarged photo" }));
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  fireEvent.click(trigger);
+  fireEvent.click(screen.getByRole("dialog").parentElement);
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+});
