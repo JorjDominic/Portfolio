@@ -14,6 +14,33 @@ const projects = [
     "An example storefront exploring editorial layouts and objects for everyday living.",
   ],
 ];
+const skillGroups = [
+  {
+    title: "Technologies",
+    items: [
+      ["Next.js", "nextdotjs"],
+      ["HTML 5", "html5"],
+      ["CSS 3", "css"],
+      ["TypeScript", "typescript"],
+      ["Tailwind CSS", "tailwindcss"],
+      ["Supabase", "supabase"],
+      ["React", "react"],
+    ],
+  },
+  {
+    title: "Tools",
+    items: [
+      ["Packet Tracer", "cisco"],
+      ["Wireshark", "wireshark"],
+      ["Windows Server", "windows"],
+      ["PowerShell", "powershell"],
+      ["Linux", "linux"],
+      ["Git", "git"],
+      ["GitHub", "github"],
+    ],
+  },
+];
+
 export default function App() {
   const [photo, setPhoto] = useState(""),
     [project, setProject] = useState(null);
@@ -44,6 +71,7 @@ export default function App() {
         <nav>
           <a href="#projects">Projects</a>
           <a href="#about">About</a>
+          <a href="#technologies">Technologies</a>
           <a
             href="https://github.com/JorjDominic"
             target="_blank"
@@ -58,7 +86,7 @@ export default function App() {
             aria-pressed={dark}
             onClick={() => setDark(!dark)}
           >
-            <span aria-hidden="true">{dark ? "☀" : "☾"}</span>
+            <span aria-hidden="true">{dark ? "\u2600" : "\u263e"}</span>
             <span>{dark ? "Light mode" : "Dark mode"}</span>
           </button>
         </nav>
@@ -92,21 +120,34 @@ export default function App() {
               INTERNSHIP AVAILABILITY &middot; NOVEMBER 2026
             </span>
           </div>
-          <p className="eyebrow">A LITTLE CURIOSITY. A LOT OF CARE.</p>
-          <h1>
-            Thoughtful design.
-            <br />
-            <span>Meaningful connections.</span>
-          </h1>
-          <div className="hero-bottom">
-            <p>
-              I turn ideas into clear, considered experiences.
-              <br />A little strategy, a little creativity, and a human touch.
-            </p>
-            <a className="text-link" href="#projects">
-              Explore my projects <span>&#8595;</span>
-            </a>
-          </div>
+          <section
+            className="about about-intro"
+            id="about"
+            aria-labelledby="about-title"
+          >
+            <div>
+              <p className="eyebrow">ABOUT ME</p>
+              <h1 id="about-title">
+                Learning, building,
+                <br />
+                <span>and connecting.</span>
+              </h1>
+            </div>
+            <div className="about-copy">
+              <p>
+                I'm Jorge Dominic M. Feliciano, an aspiring intern interested in
+                software development, computer hardware, and networking.
+              </p>
+              <p>
+                I'm looking for an opportunity to put what I'm learning into
+                practice, contribute to a team, and grow through hands-on
+                experience.
+              </p>
+              <a className="text-link" href="#projects">
+                Explore my projects <span>&#8595;</span>
+              </a>
+            </div>
+          </section>
         </section>
         <section id="projects" className="work">
           <div className="section-title">
@@ -172,31 +213,55 @@ export default function App() {
             ))}
           </div>
         </section>
-        <section className="about" id="about">
-          <div>
-            <p className="eyebrow">THE PERSON BEHIND THE PIXELS</p>
-            <h2>
-              Good work starts
-              <br />
-              with a little <em>curiosity.</em>
-            </h2>
+        <section
+          className="technology-section"
+          id="technologies"
+          aria-labelledby="technologies-title"
+        >
+          <div className="section-title">
+            <h2 id="technologies-title">Technologies &amp; tools</h2>
+            <span>WHAT I BUILD AND LEARN WITH</span>
           </div>
-          <div className="about-copy">
-            <p>
-              I'm JorjDominic, an aspiring intern interested in software
-              development, computer hardware, and networking.
-            </p>
-            <p>
-              This is your space to share your story. Add what you love doing,
-              what you're learning, and the kind of work you'd like to make
-              next.
-            </p>
-            <div className="skills">
-              <span>Software development</span>
-              <span>Computer hardware</span>
-              <span>Networking</span>
+          {skillGroups.map((group) => (
+            <div className="technology-group" key={group.title}>
+              <h3 className="eyebrow">{group.title}</h3>
+              <ul className="technology-grid">
+                {group.items.map(([name, icon]) => (
+                  <li key={name}>
+                    <div className="technology-icon" aria-hidden="true">
+                      {icon === "windows" ? (
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M2 4.5 10.5 3.3v8H2zm10-1.4L22 1.7v9.6h-10zM2 12.8h8.5v8L2 19.6zm10 0h10v9.5l-10-1.4z" />
+                        </svg>
+                      ) : icon === "powershell" ? (
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="m12 4 10 8-10 8L2 12z" />
+                          <path d="m8 9 4 3-4 3m5 0h4" />
+                        </svg>
+                      ) : (
+                        <img
+                          src={
+                            process.env.PUBLIC_URL + "/icons/" + icon + ".svg"
+                          }
+                          alt=""
+                          width="25"
+                          height="25"
+                        />
+                      )}
+                    </div>
+                    <span>{name}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
+          ))}
         </section>
         <section className="contact">
           <div>
