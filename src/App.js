@@ -25,6 +25,7 @@ const skillGroups = [
       ["Tailwind CSS", "tailwindcss"],
       ["Supabase", "supabase"],
       ["React", "react"],
+      ["Dart", "dart"],
     ],
   },
   {
@@ -37,9 +38,12 @@ const skillGroups = [
       ["Linux", "linux"],
       ["Git", "git"],
       ["GitHub", "github"],
+      ["VS Code", "vscode"],
     ],
   },
 ];
+
+const backgroundIcons = skillGroups.flatMap((group) => group.items);
 
 export default function App() {
   const headerRef = useRef(null);
@@ -108,7 +112,7 @@ export default function App() {
             <div className="ambient-track">
               {[0, 1].map((copy) => (
                 <div className="ambient-logo-group" key={copy}>
-                  {skillGroups[0].items.map(([name, icon], index) => (
+                  {backgroundIcons.map(([, icon], index) => (
                     <span
                       className="ambient-logo"
                       key={icon}
@@ -117,8 +121,8 @@ export default function App() {
                           "url(" +
                           process.env.PUBLIC_URL +
                           "/icons/" +
-                          skillGroups[0].items[
-                            (index + row * 2) % skillGroups[0].items.length
+                          backgroundIcons[
+                            (index + row * 5) % backgroundIcons.length
                           ][1] +
                           ".svg)",
                       }}
