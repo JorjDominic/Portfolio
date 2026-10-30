@@ -119,6 +119,7 @@ const skillGroups = [
       ["Vercel", "vercel"],
       ["npm", "npm"],
       ["GitHub Actions", "githubactions"],
+      ["Codemagic", "codemagic"],
       ["Android Studio", "androidstudio"],
       ["Packet Tracer", "cisco"],
       ["Windows Server", "windows"],
