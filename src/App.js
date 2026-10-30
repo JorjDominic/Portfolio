@@ -121,7 +121,6 @@ const skillGroups = [
       ["GitHub Actions", "githubactions"],
       ["Android Studio", "androidstudio"],
       ["Packet Tracer", "cisco"],
-      ["Wireshark", "wireshark"],
       ["Windows Server", "windows"],
       ["PowerShell", "powershell"],
       ["Linux", "linux"],
