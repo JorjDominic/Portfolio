@@ -1,18 +1,77 @@
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
 const projects = [
-  [
-    "fern & form",
-    "A quieter kind of brand.",
-    "Brand identity",
-    "An example identity for a botanical studio, inspired by natural forms and thoughtful details.",
-  ],
-  [
-    "forma",
-    "Room for a fresh perspective.",
-    "Web design",
-    "An example storefront exploring editorial layouts and objects for everyday living.",
-  ],
+  {
+    name: "ActiBind",
+    category: "Mobile app / Digital wellbeing",
+    tagline: "Bring plans and device habits together.",
+    description:
+      "A Flutter activity planner that combines schedules, routines, tasks, and device-usage insights in one application.",
+    stack: ["Flutter", "Dart", "Supabase", "Firebase"],
+    features: [
+      "Activity scheduling, recurring routines, tasks, and notes.",
+      "Android app-usage tracking and synchronized computer activity.",
+      "Reminders, home-screen widgets, and privacy-controlled AI insights.",
+    ],
+    status: "Development project",
+    image: "actibind.png",
+    repo: "ActiBind",
+    theme: "activity",
+  },
+  {
+    name: "CarmeLink",
+    category: "Mobile app / Dormitory management",
+    tagline: "One place for everyday dormitory operations.",
+    description:
+      "A Flutter dormitory-management prototype for Carmelita's Dormitory, with separate workspaces for tenants, guardians, caretakers, and owners.",
+    stack: ["Flutter", "Dart", "Supabase", "Firebase"],
+    features: [
+      "Role-based workspaces and account onboarding.",
+      "Billing, payment review, maintenance reports, and communication.",
+      "Gate activity, curfew requests, visitors, and geofencing workflows.",
+    ],
+    status: "Functional prototype",
+    image: "carmelink.jpg",
+    repo: "CarmeLink",
+    theme: "dormitory",
+  },
+  {
+    name: "eLikas",
+    category: "Web app / Disaster preparedness",
+    tagline: "Make preparedness easier to navigate.",
+    description:
+      "A React web application for evacuation guidance and disaster preparedness, bringing maps, evacuation centers, alerts, and community reporting together.",
+    stack: ["React", "JavaScript", "Supabase", "Leaflet"],
+    features: [
+      "Interactive Leaflet maps with location and area-drawing controls.",
+      "Evacuation-center directory, alerts, and preparedness guides.",
+      "Hazard reports and administrative management pages.",
+    ],
+    status: "Development project",
+    image: "elikas.png",
+    repo: "eLikas",
+    theme: "preparedness",
+  },
+  {
+    name: "SureShopPH",
+    category: "Web app / Shopping risk analysis",
+    tagline: "Look closer before checking out.",
+    description:
+      "An online-shopping risk-analysis project with a React interface, a Python API, and a companion browser extension.",
+    stack: ["React", "JavaScript", "Supabase", "Python / FastAPI"],
+    features: [
+      "URL and listing analysis with risk and confidence indicators.",
+      "Saved scan history, user reports, and administrative review tools.",
+      "A FastAPI backend for listing, comment, and URL analysis.",
+    ],
+    status: "Development project",
+    repo: "SureShopPH---Risk-Detection-and-Analysis-for-online-shopping-",
+    related: [
+      ["Backend", "SureShopPH---Backend-Layer"],
+      ["Browser extension", "SureShopPH---Browser-Extension"],
+    ],
+    theme: "shopping",
+  },
 ];
 const skillGroups = [
   {
@@ -206,62 +265,58 @@ export default function App() {
         <section id="projects" className="work">
           <div className="section-title">
             <h2>
-              Selected projects <small>/ 01&mdash;02</small>
+              Selected projects <small>/ 01&mdash;04</small>
             </h2>
-            <span>A FEW THINGS I'VE IMAGINED</span>
+            <span>A SELECTION FROM MY GITHUB</span>
           </div>
           <div className="projects">
             {projects.map((p, i) => (
               <button
-                className="project"
-                key={p[0]}
+                className="project repository-project"
+                key={p.name}
                 onClick={() => setProject(i)}
+                aria-label={"View " + p.name + " project"}
               >
-                <div className={"art art-" + i}>
-                  <small className="art-label">
-                    CONCEPT PROJECT &middot; 0{i + 1}
-                  </small>
-                  {i === 0 ? (
-                    <>
-                      <div className="leaf one" />
-                      <div className="leaf two" />
-                      <div className="brand">
-                        <span>&#10035;</span>
-                        <strong>fern & form</strong>
-                        <small>GROW INTO YOUR OWN.</small>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="mock">
-                        <div className="mock-nav">
-                          forma <small>Shop &nbsp; About &nbsp; &#8599;</small>
-                        </div>
-                        <h3>
-                          Objects for
-                          <br />
-                          everyday living.
-                        </h3>
-                        <small className="mock-caption">
-                          LESS, BUT BETTER.
-                        </small>
-                        <div className="disc" />
-                        <div className="vase">
-                          <i />
-                        </div>
-                      </div>
-                      <small className="art-bottom">
-                        A STUDY IN SIMPLE THINGS.
-                      </small>
-                    </>
-                  )}
+                <div className={"art repository-cover cover-" + p.theme}>
+                  <span className="cover-number">
+                    0{i + 1} / SELECTED PROJECT
+                  </span>
+                  <div className="project-emblem" aria-hidden="true">
+                    {p.image ? (
+                      <img
+                        src={process.env.PUBLIC_URL + "/projects/" + p.image}
+                        alt=""
+                        loading="lazy"
+                      />
+                    ) : (
+                      <svg
+                        viewBox="0 0 48 48"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="m24 5 15 6v11c0 10-15 21-15 21S9 32 9 22V11z" />
+                        <path d="m17 23 5 5 10-11" />
+                      </svg>
+                    )}
+                  </div>
+                  <strong className="cover-name">{p.name}</strong>
+                  <span className="cover-tagline">{p.tagline}</span>
                 </div>
                 <div className="project-info">
                   <div>
-                    <h3>{p[1]}</h3>
-                    <p>{p[2]} &nbsp;&middot;&nbsp; 2026</p>
+                    <h3>{p.name}</h3>
+                    <p>{p.category}</p>
                   </div>
-                  <span>&#8599;</span>
+                  <span aria-hidden="true">&#8599;</span>
+                </div>
+                <p className="project-summary">{p.description}</p>
+                <div className="project-stack">
+                  {p.stack.map((tech) => (
+                    <span key={tech}>{tech}</span>
+                  ))}
                 </div>
               </button>
             ))}
@@ -494,7 +549,7 @@ export default function App() {
             className="modal"
             role="dialog"
             aria-modal="true"
-            aria-label={projects[project][1]}
+            aria-label={projects[project].name}
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => {
               if (e.key === "Escape") setProject(null);
@@ -508,14 +563,44 @@ export default function App() {
             >
               &times;
             </button>
-            <p className="eyebrow">SAMPLE PROJECT / 0{project + 1}</p>
-            <h2>{projects[project][1]}</h2>
-            <p>{projects[project][3]}</p>
-            <p>
-              Make this yours: replace this concept with your own project,
-              process, and final work.
-            </p>
-            <button className="button" onClick={() => setProject(null)}>
+            <p className="eyebrow">{projects[project].category}</p>
+            <h2>{projects[project].name}</h2>
+            <span className="project-status">{projects[project].status}</span>
+            <p>{projects[project].description}</p>
+            <ul className="project-features">
+              {projects[project].features.map((feature) => (
+                <li key={feature}>{feature}</li>
+              ))}
+            </ul>
+            <div className="project-stack">
+              {projects[project].stack.map((tech) => (
+                <span key={tech}>{tech}</span>
+              ))}
+            </div>
+            <div className="repository-links">
+              <a
+                className="button"
+                href={
+                  "https://github.com/JorjDominic/" + projects[project].repo
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View on GitHub <span aria-hidden="true">&#8599;</span>
+              </a>
+              {projects[project].related?.map(([label, repo]) => (
+                <a
+                  className="related-repo"
+                  key={repo}
+                  href={"https://github.com/JorjDominic/" + repo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {label} &#8599;
+                </a>
+              ))}
+            </div>
+            <button className="project-back" onClick={() => setProject(null)}>
               Back to projects &#8599;
             </button>
           </section>

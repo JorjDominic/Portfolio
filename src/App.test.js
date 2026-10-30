@@ -15,12 +15,16 @@ test("dark mode toggles and persists across visits", () => {
   fireEvent.click(screen.getByRole("button", { name: "Switch to light mode" }));
   expect(document.documentElement).toHaveAttribute("data-theme", "light");
 });
-test("sample project opens and closes", () => {
+test("repository project opens with its GitHub source and closes", () => {
   render(<App />);
   fireEvent.click(
-    screen.getByRole("button", { name: /A quieter kind of brand/ }),
+    screen.getByRole("button", { name: "View ActiBind project" }),
   );
   expect(screen.getByRole("dialog")).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: /View on GitHub/ })).toHaveAttribute(
+    "href",
+    "https://github.com/JorjDominic/ActiBind",
+  );
   fireEvent.click(screen.getByRole("button", { name: "Close project" }));
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 });
