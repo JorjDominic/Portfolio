@@ -1,7 +1,23 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
+    <script>
+      try {
+        document.documentElement.dataset.theme =
+          localStorage.getItem("portfolio-theme") === "light"
+            ? "light"
+            : "dark";
+      } catch (_) {}
+    </script>
+    <style>
+      html {
+        background: #1e2a30;
+      }
+      html[data-theme="light"] {
+        background: #f7f8f4;
+      }
+    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#354f52" />
     <meta

@@ -5,6 +5,7 @@ beforeEach(() => {
   delete document.documentElement.dataset.theme;
 });
 test("dark mode toggles and persists across visits", () => {
+  localStorage.setItem("portfolio-theme", "light");
   const { unmount } = render(<App />);
   fireEvent.click(screen.getByRole("button", { name: "Switch to dark mode" }));
   expect(document.documentElement).toHaveAttribute("data-theme", "dark");
@@ -117,4 +118,13 @@ test("slideshow navigation wraps and Biyahe Bulacan links to the repository", ()
     "href",
     "https://github.com/JorjDominic/byahe-bulacan",
   );
+});
+
+test("first visit defaults to dark mode and remembers a switch to light", () => {
+  const { unmount } = render(<App />);
+  expect(document.documentElement).toHaveAttribute("data-theme", "dark");
+  fireEvent.click(screen.getByRole("button", { name: "Switch to light mode" }));
+  unmount();
+  render(<App />);
+  expect(document.documentElement).toHaveAttribute("data-theme", "light");
 });

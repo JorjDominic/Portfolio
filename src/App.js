@@ -228,9 +228,7 @@ export default function App() {
   };
   const [dark, setDark] = useState(() => {
     const saved = localStorage.getItem("portfolio-theme");
-    return saved
-      ? saved === "dark"
-      : !!window.matchMedia?.("(prefers-color-scheme: dark)").matches;
+    return saved !== "light";
   });
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
