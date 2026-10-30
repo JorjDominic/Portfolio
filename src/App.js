@@ -99,6 +99,37 @@ export default function App() {
   }, [dark]);
   return (
     <div className="portfolio editorial">
+      <div
+        className={"ambient-technologies" + (motionPaused ? " is-paused" : "")}
+        aria-hidden="true"
+      >
+        {[0, 1, 2].map((row) => (
+          <div className="ambient-row" key={row}>
+            <div className="ambient-track">
+              {[0, 1].map((copy) => (
+                <div className="ambient-logo-group" key={copy}>
+                  {skillGroups[0].items.map(([name, icon], index) => (
+                    <span
+                      className="ambient-logo"
+                      key={icon}
+                      style={{
+                        "--logo-mask":
+                          "url(" +
+                          process.env.PUBLIC_URL +
+                          "/icons/" +
+                          skillGroups[0].items[
+                            (index + row * 2) % skillGroups[0].items.length
+                          ][1] +
+                          ".svg)",
+                      }}
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
       <header ref={headerRef}>
         <a className="logo" href="#home">
           JorjDominic
@@ -133,10 +164,7 @@ export default function App() {
             </button>
             <div>
               <strong>Jorge Dominic M. Feliciano</strong>
-              <small>
-                IT Professional, Software Development, Hardware &amp;
-                Networking
-              </small>
+              <small>Software Development, Hardware &amp; Networking</small>
             </div>
             <span className="availability">
               <span className="education">NU Baliwag BSIT</span>

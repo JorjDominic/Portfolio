@@ -1468,3 +1468,87 @@ html {
     animation: none;
   }
 }
+
+/* Slow, decorative technology marks behind the full viewport. */
+.portfolio {
+  position: relative;
+  isolation: isolate;
+}
+.ambient-technologies {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.045;
+  color: var(--accent);
+}
+:root[data-theme="dark"] .ambient-technologies {
+  opacity: 0.055;
+}
+.ambient-row {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 9%;
+  transform: rotate(-9deg) scale(1.1);
+}
+.ambient-row:nth-child(2) {
+  top: 43%;
+  transform: rotate(7deg) scale(1.1);
+}
+.ambient-row:nth-child(3) {
+  top: 77%;
+}
+.ambient-track {
+  display: flex;
+  width: max-content;
+  animation: ambient-drift 100s linear infinite;
+}
+.ambient-row:nth-child(2) .ambient-track {
+  animation-direction: reverse;
+  animation-duration: 125s;
+}
+.ambient-row:nth-child(3) .ambient-track {
+  animation-duration: 145s;
+}
+.ambient-logo-group {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-shrink: 0;
+  min-width: 100vw;
+}
+.ambient-logo {
+  display: block;
+  flex-shrink: 0;
+  width: 76px;
+  height: 76px;
+  margin: 0 clamp(30px, 4vw, 90px);
+  background: currentColor;
+  mask-image: var(--logo-mask);
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
+.ambient-technologies.is-paused .ambient-track {
+  animation-play-state: paused;
+}
+@keyframes ambient-drift {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (max-width: 700px) {
+  .ambient-logo {
+    width: 58px;
+    height: 58px;
+    margin: 0 36px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ambient-track {
+    animation: none;
+  }
+}
