@@ -153,18 +153,19 @@ export default function App() {
               <h1 id="about-title">
                 Learning, building,
                 <br />
-                <span>and connecting.</span>
+                <span>and tinkering.</span>
               </h1>
             </div>
             <div className="about-copy">
               <p>
-                I'm Jorge Dominic M. Feliciano, an aspiring intern interested in
-                software development, computer hardware, and networking.
+                I'm Jorge Dominic M. Feliciano, an aspiring IT professional with
+                a passion for software development, computer hardware, and
+                networking.
               </p>
               <p>
-                I'm looking for an opportunity to put what I'm learning into
-                practice, contribute to a team, and grow through hands-on
-                experience.
+                I'm looking for opportunities to apply my knowledge, explore new
+                technologies, contribute to meaningful projects, and
+                continuously grow through hands-on experience.
               </p>
             </div>
           </section>
